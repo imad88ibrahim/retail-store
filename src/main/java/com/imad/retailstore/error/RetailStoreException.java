@@ -3,6 +3,10 @@ package com.imad.retailstore.error;
 public class RetailStoreException extends Exception {
 	private static final long serialVersionUID = 1L;
 
+	public RetailStoreException() {
+		super();
+	}
+
 	public RetailStoreException(String msg, Throwable e) {
 		super(msg, e);
 	}

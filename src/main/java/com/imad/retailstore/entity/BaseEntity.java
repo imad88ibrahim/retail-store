@@ -14,12 +14,12 @@ public class BaseEntity implements Serializable {
 	private long createdBy;
 	@CreationTimestamp
 	@Column(name = "CREATED_DATE")
-	private LocalDate createdDate;
+	private transient LocalDate createdDate;
 	@Column(name = "MODIFIED_BY")
 	private long modifiedBy;
 	@UpdateTimestamp
 	@Column(name = "MODIFIED_DATE")
-	private LocalDate modifiedDate;
+	private transient LocalDate modifiedDate;
 	@Version
 	@Column(name = "VERSION_NO")
 	private long versionNo;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.imad.retailstore.dto.UserDTO;
+import com.imad.retailstore.error.RetailStoreException;
 import com.imad.retailstore.interfaces.IDiscountService;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +47,15 @@ public class DiscountControllerTest {
 		when(discountService.getDiscount(any(UserDTO.class), anyDouble(), anyString())).thenReturn(45.0);
 		mockMvc.perform(post("/api-gateway/user/discount?bill=990.0&item=books").contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest)).andExpect(status().isOk()).andReturn();
+	}
+	
+	@Test
+	public void getDiscountExceptionTest() throws Exception {
+		UserDTO userDTO = new UserDTO();
+		String jsonRequest = ow.writeValueAsString(userDTO);
+		when(discountService.getDiscount(any(UserDTO.class), anyDouble(), anyString())).thenThrow(RetailStoreException.class);
+		mockMvc.perform(post("/api-gateway/user/discount?bill=990.0&item=books").contentType(MediaType.APPLICATION_JSON)
+				.content(jsonRequest)).andExpect(status().isNoContent()).andReturn();
 	}
 
 }

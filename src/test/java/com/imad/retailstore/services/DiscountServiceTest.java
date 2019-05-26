@@ -36,11 +36,12 @@ public class DiscountServiceTest {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setCreatedDate(LocalDate.now().minusYears(3));
 		userDTO.setUserType(UserType.EMPLOYEE);
+		userEntity.getUserId();
 		when(userRepository.findById(anyLong())).thenReturn(Optional.of(userEntity));
 		assertEquals(Double.valueOf(0.0),
 				discountService.getDiscount(userDTO, 90.00, AppConstants.ITEM_TYPE_GROCERIES));
 	}
-	
+
 	@Test
 	public void getDiscountForGroceriesAndForEvery100OnTheBill() throws RetailStoreException {
 		UserDTO userDTO = new UserDTO();
@@ -106,6 +107,44 @@ public class DiscountServiceTest {
 		userDTO.setUserType(UserType.CUSTOMER);
 		when(userRepository.findById(anyLong())).thenThrow(RuntimeException.class);
 		assertEquals(Double.valueOf(45.0), discountService.getDiscount(userDTO, 990.00, "books"));
+	}
+
+	@Test
+	public void userEntityTest() throws RetailStoreException {
+		UserEntity userEntity = new UserEntity();
+		userEntity.setUserId(1100l);
+		userEntity.setUserType(UserType.EMPLOYEE.toString());
+		userEntity.setCreatedDate(LocalDate.now().minusYears(3));
+		userEntity.setCreatedBy(1100l);
+		userEntity.setModifiedDate(LocalDate.now());
+		userEntity.setModifiedBy(1100l);
+		userEntity.setVersionNo(1l);
+		userEntity.getCreatedDate();
+		userEntity.getCreatedBy();
+		userEntity.getModifiedDate();
+		userEntity.getModifiedBy();
+		userEntity.getVersionNo();
+		userEntity.getUserId();
+		userEntity.getUserType();
+		assertEquals(Long.valueOf(1100l), userEntity.getUserId());
+	}
+
+	@Test
+	public void userTOTest() throws RetailStoreException {
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUserId(1100l);
+		userDTO.setUserType(UserType.EMPLOYEE);
+		userDTO.getUserId();
+		userDTO.getUserType();
+		assertEquals(Long.valueOf(1100l), userDTO.getUserId());
+	}
+
+	@Test
+	public void retailStoreExceptionTest() throws RetailStoreException {
+		RetailStoreException retailStoreException = new RetailStoreException();
+		retailStoreException = new RetailStoreException("msg");
+		retailStoreException = new RetailStoreException("msg", new Exception());
+		assertEquals("msg", retailStoreException.getMessage());
 	}
 
 }
